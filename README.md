@@ -1,21 +1,14 @@
-...............,-:"=== README ===":-,...............
+# TagPro for Android
+#### Version 0.0.1
 
-VERSION 0.0.1
+This is a port of the online game TagPro, which can be played [here](http://tagpro.koalabeast.com), to Android.
 
-This is the git repo for the port of the game TagPro
-to Android. The original game can be found at:
-
-tagpro.koalabeast.com
-
-Original creator: LuckySpammer
+The online game was developed by LuckySpammer.
 
 Current list of contributors:
-roflmaoshizmp
-...
+* roflmaoshizmp
+* jj56 (✈ in TagPro)
 
-If you want to be added as a collaborator, send a PM
-on Reddit to /u/roflmaoshizmp
+If you want to commit to the project, open a pull request. If you've submitted some good code, we may add you as a collaborator.
 
-Currently no actual files are found on here because
-I've yet got to update my ADT to the latest versions
-and actually create the project.
+Currently no actual project is here, we will have one up very soon.
