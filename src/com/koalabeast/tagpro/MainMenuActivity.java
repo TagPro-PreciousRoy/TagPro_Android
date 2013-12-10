@@ -5,6 +5,7 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.google.gson.JsonArray;
@@ -35,6 +36,9 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 
 					@Override
 					public void onCompleted(Exception e, JsonArray result) {
+
+						findViewById(R.id.loadingSpinnerLayout).setVisibility(View.GONE);
+						findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
 
 						for (JsonElement serverElement : result) {
 							JsonObject server = serverElement.getAsJsonObject();
