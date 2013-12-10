@@ -12,3 +12,5 @@ Current list of contributors:
 If you want to commit to the project, open a pull request. If you've submitted some good code, we may add you as a collaborator.
 
 Currently no actual project is here, we will have one up very soon.
+
+There is a subreddit [here (/r/TagProAndroid)](http://www.reddit.com/r/TagProAndroid/) for discussion about the development of this app. 
