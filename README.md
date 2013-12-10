@@ -17,5 +17,5 @@ If you want to be added as a collaborator, send a PM
 on Reddit to /u/roflmaoshizmp
 
 Currently no actual files are found on here because
-I'm still awaiting the approval of this project 
-from LuckySpammer.
+I've yet got to update my ADT to the latest versions
+and actually create the project.
