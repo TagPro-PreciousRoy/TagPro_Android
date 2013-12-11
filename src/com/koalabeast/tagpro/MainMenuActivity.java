@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -27,31 +28,38 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 
-		// Set up server list in the action bar
 		ActionBar bar = getActionBar();
 		serverListAdapter = new ArrayAdapter<String>(bar.getThemedContext(),
-				android.R.layout.simple_spinner_item);
+				android.R.layout.simple_spinner_item); // Create adapter
 
+		// Set up server spinner
 		serverListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		bar.setListNavigationCallbacks(serverListAdapter, this);
-
+		
+		// Request the server list
 		Ion.with(this, "http://tagpro.koalabeast.com/servers").asJsonArray()
 				.setCallback(new FutureCallback<JsonArray>() {
-
+					
 					@Override
 					public void onCompleted(Exception e, JsonArray result) {
+						// Called when the server list has been fetched
 
+						// Hide the loading spinner
 						findViewById(R.id.loadingSpinnerLayout).setVisibility(View.GONE);
 						if (e != null) {
 							new NetworkErrorDialogFragment().show(getFragmentManager(),
 									"NetworkErrorDialogFragment");
 						} else {
-							findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
+							// Add maptest server - not for final release!
+							servers.add(new ServerInfo("Maptest", "unknown", "http://tagpro-maptest.koalabeast.com", false, 0, 0));
+							
 
+							// Loop through servers
 							for (JsonElement serverElement : result) {
 								JsonObject obj = serverElement.getAsJsonObject();
 								
+								// Convert JsonObjects to ServerInfo objects
 								ServerInfo server = new ServerInfo(
 									obj.get("name").getAsString(),
 									obj.get("location").getAsString(),
@@ -61,9 +69,17 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 									obj.get("players").getAsInt()
 								);
 								
+								// Add to servers ArrayList
 								servers.add(server);
-								serverListAdapter.add(server.name);
 							}
+							
+							for (ServerInfo s : servers) {
+								// Loop through servers, adding them to the dropdown
+								serverListAdapter.add(s.name);
+							}
+							
+							// Show the main layout
+							findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
 						}
 					}
 
@@ -72,17 +88,29 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+		// Inflate the menu; this adds items to the action bar
+		// TODO Add things to menu!
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		// TODO select server
-		String serverName = servers.get(itemPosition).name;
+		// TODO Select server
 		
-		Toast.makeText(this, "Picked " + serverName, Toast.LENGTH_SHORT).show();
+		// Find info for picked server
+		ServerInfo server = servers.get(itemPosition);
+		
+		// Show a toast with the server name (should do something better!)
+		Toast.makeText(this, "Picked " + server.name, Toast.LENGTH_SHORT).show();
+		
+		// Show server info on the menu
+		((TextView) findViewById(R.id.serverName)).setText(server.name);
+		((TextView) findViewById(R.id.serverLocation)).setText(server.location);
+		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + server.players);
+		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + server.games);
+				
+		
 		return false;
 	}
 
