@@ -1,5 +1,7 @@
 package com.koalabeast.tagpro;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -18,9 +20,9 @@ import com.koushikdutta.ion.Ion;
 
 public class MainMenuActivity extends Activity implements OnNavigationListener {
 	private ArrayAdapter<String> serverListAdapter;
-	private JsonArray servers;
+	private ArrayList<ServerInfo> servers = new ArrayList<ServerInfo>();
 
-	// @Overriden
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
@@ -45,15 +47,22 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 							new NetworkErrorDialogFragment().show(getFragmentManager(),
 									"NetworkErrorDialogFragment");
 						} else {
-							
-							servers = result;
-
 							findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
 
 							for (JsonElement serverElement : result) {
-								JsonObject server = serverElement.getAsJsonObject();
-								String serverName = server.get("name").getAsString();
-								serverListAdapter.add(serverName);
+								JsonObject obj = serverElement.getAsJsonObject();
+								
+								ServerInfo server = new ServerInfo(
+									obj.get("name").getAsString(),
+									obj.get("location").getAsString(),
+									obj.get("url").getAsString(),
+									obj.get("error").getAsBoolean(),
+									obj.get("games").getAsInt(),
+									obj.get("players").getAsInt()
+								);
+								
+								servers.add(server);
+								serverListAdapter.add(server.name);
 							}
 						}
 					}
@@ -71,7 +80,8 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		// TODO select server
-		String serverName = servers.get(itemPosition).getAsJsonObject().get("name").getAsString();
+		String serverName = servers.get(itemPosition).name;
+		
 		Toast.makeText(this, "Picked " + serverName, Toast.LENGTH_SHORT).show();
 		return false;
 	}
