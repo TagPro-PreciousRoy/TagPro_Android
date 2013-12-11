@@ -38,12 +38,18 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 					public void onCompleted(Exception e, JsonArray result) {
 
 						findViewById(R.id.loadingSpinnerLayout).setVisibility(View.GONE);
-						findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
+						if (e != null) {
+							new NetworkErrorDialogFragment().show(getFragmentManager(),
+									"NetworkErrorDialogFragment");
+						} else {
 
-						for (JsonElement serverElement : result) {
-							JsonObject server = serverElement.getAsJsonObject();
-							String serverName = server.get("name").getAsString();
-							serverListAdapter.add(serverName);
+							findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
+
+							for (JsonElement serverElement : result) {
+								JsonObject server = serverElement.getAsJsonObject();
+								String serverName = server.get("name").getAsString();
+								serverListAdapter.add(serverName);
+							}
 						}
 					}
 
