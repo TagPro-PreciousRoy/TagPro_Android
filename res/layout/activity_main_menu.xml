@@ -22,18 +22,27 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="gone" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"
-            android:textColor="#ffffff" />
+            android:orientation="horizontal" >
 
-        <Button
-            style="@style/greenButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="switchToPlay"
-            android:text="Play" />
+            <Button
+                style="@style/greenButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="switchToPlay"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:text="Play" />
+
+            <Button
+                style="@style/greenButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="DoSomething" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout

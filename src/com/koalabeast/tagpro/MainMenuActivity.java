@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,6 +18,7 @@ import com.koushikdutta.ion.Ion;
 
 public class MainMenuActivity extends Activity implements OnNavigationListener {
 	private ArrayAdapter<String> serverListAdapter;
+	private JsonArray servers;
 
 	// @Overriden
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 							new NetworkErrorDialogFragment().show(getFragmentManager(),
 									"NetworkErrorDialogFragment");
 						} else {
+							
+							servers = result;
 
 							findViewById(R.id.serverInfoLayout).setVisibility(View.VISIBLE);
 
@@ -67,6 +71,8 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		// TODO select server
+		String serverName = servers.get(itemPosition).getAsJsonObject().get("name").getAsString();
+		Toast.makeText(this, "Picked " + serverName, Toast.LENGTH_SHORT).show();
 		return false;
 	}
 
