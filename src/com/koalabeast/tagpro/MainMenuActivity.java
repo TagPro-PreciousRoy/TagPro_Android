@@ -3,6 +3,7 @@ package com.koalabeast.tagpro;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -67,6 +68,11 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		// TODO select server
 		return false;
+	}
+
+	public void switchToPlay(View button) {
+		Intent in = new Intent(this, GameActivity.class);
+		startActivity(in);
 	}
 
 }
