@@ -1,6 +1,8 @@
 package com.koalabeast.tagpro;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -70,6 +72,13 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 								// Add to servers ArrayList
 								servers.add(server);
 							}
+							
+							// Put the servers in Alpha order.
+							Collections.sort(servers, new Comparator<ServerInfo>() {
+								public int compare(ServerInfo s1, ServerInfo s2) {
+									return s1.name.compareToIgnoreCase(s2.name);
+								}
+							});
 							
 							for (ServerInfo s : servers) {
 								// Loop through servers, adding them to the dropdown
