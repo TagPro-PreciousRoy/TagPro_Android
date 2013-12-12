@@ -10,4 +10,20 @@
     <string name="network_error_button">Okay :(</string>
     <string name="title_activity_game">GameActivity</string>
 
+    <!-- Main Menu -->
+    <string name="button_play">Play</string>
+    <string name="button_leader">Leaders</string>
+
+    <!-- LeaderActivity -->
+    <string-array name="leader_queries">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <string name="title_activity_leader">LeaderActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
 </resources>

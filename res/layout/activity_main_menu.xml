@@ -2,14 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenuActivity" >
+    tools:context=".MainMenuActivity"
+    android:background="@drawable/menu_background_sm"
+    android:scaleType="centerCrop"
+    android:orientation="vertical" >
 
-    <ImageView
+    <!-- ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/menu_background" />
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/menu_background" /-->
 
     <LinearLayout
         android:id="@+id/serverInfoLayout"
@@ -27,7 +31,7 @@
             style="@style/whiteLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <TextView
@@ -51,14 +55,15 @@
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_weight="1"
                 android:onClick="switchToPlay"
-                android:text="Play" />
+                android:text="@string/button_play" />
 
             <Button
                 style="@style/greenButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="DoSomething" />
+                android:onClick="switchToLeaders"
+                android:text="@string/button_leader" />
         </LinearLayout>
 
         <TextView

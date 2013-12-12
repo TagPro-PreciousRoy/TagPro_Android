@@ -118,5 +118,10 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		Intent in = new Intent(this, GameActivity.class);
 		startActivity(in);
 	}
-
+	
+	public void switchToLeaders(View button) {
+		Toast.makeText(this, "LeaderActivity call", Toast.LENGTH_SHORT).show();
+		Intent in = new Intent(this, LeaderActivity.class);
+		startActivity(in);
+	}
 }

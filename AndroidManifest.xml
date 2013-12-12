@@ -28,6 +28,10 @@
             android:name="com.koalabeast.tagpro.GameActivity"
             android:label="@string/title_activity_game" >
         </activity>
+        <activity
+            android:name="com.koalabeast.tagpro.LeaderActivity"
+            android:label="@string/title_activity_leader" >
+        </activity>
     </application>
 
 </manifest>
