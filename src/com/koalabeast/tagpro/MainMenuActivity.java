@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,7 +21,7 @@ import com.koushikdutta.ion.Ion;
 public class MainMenuActivity extends Activity implements OnNavigationListener {
 	private ArrayAdapter<String> serverListAdapter;
 	private ArrayList<ServerInfo> servers = new ArrayList<ServerInfo>();
-	private ServerInfo server = null;
+	private ServerInfo pickedServer = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +48,10 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 						// Hide the loading spinner
 						findViewById(R.id.loadingSpinnerLayout).setVisibility(View.GONE);
 						if (e != null) {
-							new NetworkErrorDialogFragment().show(getFragmentManager(),
-									"NetworkErrorDialogFragment");
+							showNetworkError();
 						} else {
 							// Add maptest server - not for final release!
-							servers.add(new ServerInfo("Maptest", "unknown", "http://tagpro-maptest.koalabeast.com", false, 0, 0));
+							servers.add(new ServerInfo("Maptest", "unknown", "http://tagpro-maptest.koalabeast.com", 0, 0));
 							
 
 							// Loop through servers
@@ -65,7 +63,6 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 									obj.get("name").getAsString(),
 									obj.get("location").getAsString(),
 									obj.get("url").getAsString(),
-									obj.get("error").getAsBoolean(),
 									obj.get("games").getAsInt(),
 									obj.get("players").getAsInt()
 								);
@@ -100,26 +97,25 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		// TODO Select server
 		
 		// Find info for picked server
-		this.server = servers.get(itemPosition);
+		ServerInfo server = servers.get(itemPosition);
 		
-		// Show a toast with the server name (should do something better!)
-		Toast.makeText(this, "Picked " + this.server.name, Toast.LENGTH_SHORT).show();
+		// Make it available from showJoinDialog
+		pickedServer = server;
 		
 		// Show server info on the menu
-		((TextView) findViewById(R.id.serverName)).setText(this.server.name);
-		((TextView) findViewById(R.id.serverLocation)).setText(this.server.location);
-		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + this.server.players);
-		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + this.server.games);
-				
-		
+		((TextView) findViewById(R.id.serverName)).setText(server.name);
+		((TextView) findViewById(R.id.serverLocation)).setText(server.location);
+		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + server.players);
+		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + server.games);
+
 		return false;
 	}
-	
+
 	// Save the instance state when we go to other activities.
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		savedInstanceState.putParcelable("server", this.server);
+		savedInstanceState.putParcelable("server", this.pickedServer);
 	}
 	
 	// TODO - Restore the instance state when we get back from other activities.
@@ -129,8 +125,16 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		//this.server = savedInstanceState.getParcelable("server");
 	}
 	
+	public void showJoinDialog(View button) {
+		if (pickedServer != null) { // Shouldn't fail, but doing nothing is better than a crash
+			// Create and show join dialog
+			JoinGameDialogFragment
+				.newInstance(pickedServer.name, pickedServer.url, pickedServer.location)
+				.show(getFragmentManager(), "JoinGameDialogFragment");
+		}
+	}
 
-	public void switchToPlay(View button) {
+	public void switchToPlay() {
 		Intent in = new Intent(this, GameActivity.class);
 		startActivity(in);
 	}
@@ -139,8 +143,13 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		Intent in = new Intent(this, LeaderActivity.class);
 		// Pass in the server info to query from.
 		Bundle b = new Bundle();
-		b.putParcelable("server", this.server);
+		b.putParcelable("server", pickedServer);
 		in.putExtras(b);
 		startActivity(in);
+	}
+
+	public void showNetworkError() {
+		new NetworkErrorDialogFragment().show(getFragmentManager(),
+				"NetworkErrorDialogFragment");
 	}
 }

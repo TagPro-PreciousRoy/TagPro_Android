@@ -7,28 +7,25 @@ public class ServerInfo implements Parcelable {
 	public String name;
 	public String location;
 	public String url;
-	public boolean error;
 	public int games;
 	public int players;
 	
-	ServerInfo(String name, String location, String url, boolean error, int games, int players) {
+	ServerInfo(String name, String location, String url, int games, int players) {
 		this.name = name;
 		this.location = location;
 		this.url = url;
-		this.error = error;
 		this.games = games;
 		this.players = players;
 	}
 	
 	public ServerInfo(Parcel in) {
-		String[] data = new String[6];
+		String[] data = new String[5];
 		in.readStringArray(data);
 		this.name = data[0];
 		this.location = data[1];
 		this.url = data[2];
-		this.error = Boolean.parseBoolean(data[3]);
-		this.games = Integer.parseInt(data[4]);
-		this.players = Integer.parseInt(data[5]);
+		this.games = Integer.parseInt(data[3]);
+		this.players = Integer.parseInt(data[4]);
 	}
 	
 	@Override
@@ -41,8 +38,7 @@ public class ServerInfo implements Parcelable {
 		dest.writeStringArray(new String[] {
 			this.name, 
 			this.location, 
-			this.url, 
-			Boolean.toString(this.error), 
+			this.url,
 			Integer.toString(this.games), 
 			Integer.toString(this.players)
 		});

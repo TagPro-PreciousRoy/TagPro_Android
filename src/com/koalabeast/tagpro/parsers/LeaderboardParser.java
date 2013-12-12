@@ -1,6 +1,4 @@
 package com.koalabeast.tagpro.parsers;
-import com.koalabeast.tagpro.LeaderInfo;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,6 +13,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.util.Xml;
+
+import com.koalabeast.tagpro.LeaderInfo;
 
 public class LeaderboardParser {
 	private String url;
