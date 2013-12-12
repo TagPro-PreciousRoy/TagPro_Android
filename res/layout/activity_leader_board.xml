@@ -19,7 +19,9 @@
 	    	    android:id="@+id/logo"
 	    	    android:padding="5dp"
 	    	    android:contentDescription="@string/app_name"
-	    	    android:src="@drawable/logo" />     
+	    	    android:src="@drawable/logo"
+	    	    android:layout_marginLeft="16dp"
+		 	    android:layout_marginRight="16dp" />     
 	   	    <Spinner
 	   	        android:id="@+id/leader_filter"
 	   	        android:typeface="monospace"
