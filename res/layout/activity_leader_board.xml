@@ -22,12 +22,48 @@
 	    	    android:src="@drawable/logo" />     
 	   	    <Spinner
 	   	        android:id="@+id/leader_filter"
+	   	        android:typeface="monospace"
+	   	        android:textStyle="bold"
+	   	        android:textSize="25sp"
+	   	        android:singleLine="True"
 	   	        android:layout_width="fill_parent"
+	   	        android:layout_height="wrap_content"
 	   	        android:layout_marginLeft="15dp"
 	   	        android:layout_marginRight="15dp"
 	   	        android:gravity="center"
-	   	        android:layout_height="wrap_content"
 	   	        style="@style/greenButton" />
+	   	    
+	   	    <TableLayout 
+	   	        android:id="@+id/leader_table"
+	   	        android:layout_width="fill_parent"
+	   	        android:layout_height="wrap_content"
+	   	        android:layout_marginLeft="15dp"
+	   	        android:layout_marginRight="15dp"
+	   	        android:layout_marginTop="10dp" >
+	   	        <TableRow
+	   	            android:id="@+id/leader_table_head"
+	   	            android:layout_width="match_parent"
+	   	            android:layout_height="wrap_content" >
+	   	            <TextView
+	   	                android:text="@string/leader_table_headerC1" 
+	   	                style="@style/tableheaders" 
+	   	                android:layout_weight="0.10"
+	   	                android:layout_height="wrap_content" />
+	   	            <TextView
+	   	                android:text="@string/leader_table_headerC2" 
+	   	                style="@style/tableheaders"
+	   	                android:layout_weight="0.25"
+	   	                android:layout_height="wrap_content"
+	   	                android:layout_marginLeft="1dp"
+	   	                android:layout_marginRight="1dp" />
+	   	            <TextView
+	   	                android:text="@string/leader_table_headerC3"
+	   	                style="@style/tableheaders"
+	   	                android:layout_weight="0.25"
+	   	                android:layout_height="wrap_content" />
+	   	        </TableRow>
+	   	    </TableLayout>
+	   	    
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -22,6 +22,7 @@ import com.koushikdutta.ion.Ion;
 public class MainMenuActivity extends Activity implements OnNavigationListener {
 	private ArrayAdapter<String> serverListAdapter;
 	private ArrayList<ServerInfo> servers = new ArrayList<ServerInfo>();
+	private ServerInfo server = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,20 +100,35 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		// TODO Select server
 		
 		// Find info for picked server
-		ServerInfo server = servers.get(itemPosition);
+		this.server = servers.get(itemPosition);
 		
 		// Show a toast with the server name (should do something better!)
-		Toast.makeText(this, "Picked " + server.name, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Picked " + this.server.name, Toast.LENGTH_SHORT).show();
 		
 		// Show server info on the menu
-		((TextView) findViewById(R.id.serverName)).setText(server.name);
-		((TextView) findViewById(R.id.serverLocation)).setText(server.location);
-		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + server.players);
-		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + server.games);
+		((TextView) findViewById(R.id.serverName)).setText(this.server.name);
+		((TextView) findViewById(R.id.serverLocation)).setText(this.server.location);
+		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + this.server.players);
+		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + this.server.games);
 				
 		
 		return false;
 	}
+	
+	// Save the instance state when we go to other activities.
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putParcelable("server", this.server);
+	}
+	
+	// TODO - Restore the instance state when we get back from other activities.
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		//this.server = savedInstanceState.getParcelable("server");
+	}
+	
 
 	public void switchToPlay(View button) {
 		Intent in = new Intent(this, GameActivity.class);
@@ -120,8 +136,11 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 	}
 	
 	public void switchToLeaders(View button) {
-		Toast.makeText(this, "LeaderActivity call", Toast.LENGTH_SHORT).show();
 		Intent in = new Intent(this, LeaderActivity.class);
+		// Pass in the server info to query from.
+		Bundle b = new Bundle();
+		b.putParcelable("server", this.server);
+		in.putExtras(b);
 		startActivity(in);
 	}
 }

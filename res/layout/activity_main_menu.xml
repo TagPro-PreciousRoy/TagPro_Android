@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,13 +8,12 @@
     android:scaleType="centerCrop"
     android:orientation="vertical" >
 
-    <!-- ImageView
-        android:id="@+id/backgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/menu_background" /-->
+   	<ImageView
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_width="wrap_content"
+ 	    android:id="@+id/logo"
+ 	    android:contentDescription="@string/app_name"
+ 	    android:src="@drawable/logo" />
 
     <LinearLayout
         android:id="@+id/serverInfoLayout"
@@ -94,4 +94,4 @@
             android:layout_centerVertical="true" />
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

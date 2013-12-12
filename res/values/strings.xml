@@ -15,15 +15,13 @@
     <string name="button_leader">Leaders</string>
 
     <!-- LeaderActivity -->
+    <string name="title_activity_leader">LeaderActivity</string>
     <string-array name="leader_queries">
         <item>Day</item>
         <item>Week</item>
         <item>Month</item>
     </string-array>
-
-    <string name="title_activity_leader">LeaderActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
+	<string name="leader_table_headerC1">Rank</string>
+	<string name="leader_table_headerC2">Name</string>
+	<string name="leader_table_headerC3">Points</string>
 </resources>

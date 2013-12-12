@@ -1,7 +1,6 @@
 package com.koalabeast.tagpro;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,9 +11,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class LeaderActivity extends Activity implements OnItemSelectedListener {
+	private ServerInfo server;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Get the server we are to query the leaderboard from.
+		Bundle b = getIntent().getExtras();
+		this.server = b.getParcelable("server");
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_leader_board);
 		
 		Spinner spinLeaderFilter = (Spinner) findViewById(R.id.leader_filter);
@@ -22,6 +29,11 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinLeaderFilter.setAdapter(adapter);
 		spinLeaderFilter.setOnItemSelectedListener(this);
+		
+		// TODO - Use the Leaderboard Parser to get the data from the leaderboards.  Have a loader while this is underway.
+		
+		// Just checking to make sure that the server passed in correctly.
+		Toast.makeText(getApplicationContext(), "Server: " + this.server.name, Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
@@ -31,14 +43,10 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener {
 	}
 	
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		//parent.getItemAtPosition(pos);
-		Context context = getApplicationContext();
-		CharSequence text = "Item Selected: " + Integer.toString(pos);
-		Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-		toast.show();
+		//
 	}
 		
 	public void onNothingSelected(AdapterView<?> parent) {
-			
+		// Doesn't matter.
 	}
 }
