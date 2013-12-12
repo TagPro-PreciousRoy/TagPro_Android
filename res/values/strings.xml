@@ -9,5 +9,11 @@
     <string name="network_error_description">Looks like you aren\'t connected to the internet! If you are, it could be that the Koalabeast servers are under heavy load. Try again later.</string>
     <string name="network_error_button">Okay :(</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_join_game_dialog">JoinGameDialog</string>
+    
+    <string name="join_game_title">Finding game…</string>
+    
+    <string name="join_game_state_connecting">Connecting to server…</string>
+    <string name="join_game_state_looking">Looking for a game…</string>
 
 </resources>

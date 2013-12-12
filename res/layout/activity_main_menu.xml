@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_weight="1"
-                android:onClick="switchToPlay"
+                android:onClick="showJoinDialog"
                 android:text="Play" />
 
             <Button

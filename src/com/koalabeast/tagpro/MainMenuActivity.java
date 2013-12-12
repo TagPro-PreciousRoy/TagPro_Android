@@ -22,6 +22,7 @@ import com.koushikdutta.ion.Ion;
 public class MainMenuActivity extends Activity implements OnNavigationListener {
 	private ArrayAdapter<String> serverListAdapter;
 	private ArrayList<ServerInfo> servers = new ArrayList<ServerInfo>();
+	private ServerInfo pickedServer = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,10 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 						// Hide the loading spinner
 						findViewById(R.id.loadingSpinnerLayout).setVisibility(View.GONE);
 						if (e != null) {
-							new NetworkErrorDialogFragment().show(getFragmentManager(),
-									"NetworkErrorDialogFragment");
+							showNetworkError();
 						} else {
 							// Add maptest server - not for final release!
-							servers.add(new ServerInfo("Maptest", "unknown", "http://tagpro-maptest.koalabeast.com", false, 0, 0));
+							servers.add(new ServerInfo("Maptest", "unknown", "http://tagpro-maptest.koalabeast.com", 0, 0));
 							
 
 							// Loop through servers
@@ -64,7 +64,6 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 									obj.get("name").getAsString(),
 									obj.get("location").getAsString(),
 									obj.get("url").getAsString(),
-									obj.get("error").getAsBoolean(),
 									obj.get("games").getAsInt(),
 									obj.get("players").getAsInt()
 								);
@@ -101,8 +100,8 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		// Find info for picked server
 		ServerInfo server = servers.get(itemPosition);
 		
-		// Show a toast with the server name (should do something better!)
-		Toast.makeText(this, "Picked " + server.name, Toast.LENGTH_SHORT).show();
+		// Make it available from showJoinDialog
+		pickedServer = server;
 		
 		// Show server info on the menu
 		((TextView) findViewById(R.id.serverName)).setText(server.name);
@@ -113,10 +112,24 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		
 		return false;
 	}
+	
+	public void showJoinDialog(View button) {
+		if (pickedServer != null) { // Shouldn't fail, but doing nothing is better than a crash
+			// Create and show join dialog
+			JoinGameDialogFragment
+				.newInstance(pickedServer.name, pickedServer.url, pickedServer.location)
+				.show(getFragmentManager(), "JoinGameDialogFragment");
+		}
+	}
 
-	public void switchToPlay(View button) {
+	public void switchToPlay() {
 		Intent in = new Intent(this, GameActivity.class);
 		startActivity(in);
+	}
+	
+	public void showNetworkError() {
+		new NetworkErrorDialogFragment().show(getFragmentManager(),
+				"NetworkErrorDialogFragment");
 	}
 
 }
