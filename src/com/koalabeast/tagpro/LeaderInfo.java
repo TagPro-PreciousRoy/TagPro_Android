@@ -1,39 +1,31 @@
 package com.koalabeast.tagpro;
 
-import java.net.URL;
-import java.net.MalformedURLException;
-
 public class LeaderInfo {
-	private int rank;
-	private String name;
-	private int points;
-	private URL profile;
+	private int rank;		// Rank on leaderboard
+	private String name;	// Username
+	private String href;	// Link to Profile
+	private int points;		// Number of points
 	
-	public LeaderInfo(int rank, String name, int points, String profileUrl) {
-		this.rank = rank;
+	public LeaderInfo (String rank, String name, String href, String points) {
+		this.rank = Integer.parseInt(rank);
 		this.name = name;
-		this.points = points;
-		try {
-			this.profile = new URL(profileUrl);
-		}
-		catch (MalformedURLException e) {
-			this.profile = null;
-		}
+		this.href = href;
+		this.points = Integer.parseInt(points);
 	}
-
+	
 	public int getRank() {
-		return this.rank;
+		return rank;
 	}
-
+	
 	public String getName() {
-		return this.name;
+		return name;
+	}
+	
+	public String getHref() {
+		return href;
 	}
 	
 	public int getPoints() {
-		return this.points;
-	}
-	
-	public URL getProfileLink() {
-		return this.profile;
+		return points;
 	}
 }
