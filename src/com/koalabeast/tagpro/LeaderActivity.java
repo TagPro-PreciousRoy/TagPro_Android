@@ -15,6 +15,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +45,11 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener {
 		
 		setContentView(R.layout.activity_leader_board);
 		
+		// Populate the text field with the server info
+		TextView serverId = (TextView) findViewById(R.id.serverId);
+		serverId.setText(server.name + ": " + server.location);
+		
+		// Create the spinner for the leaderboard filter
 		Spinner spinLeaderFilter = (Spinner) findViewById(R.id.leader_filter);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leader_queries, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -77,23 +83,60 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener {
 		// Doesn't matter, leave things alone.
 	}
 	
+	/*
+	 * Clear out the current leader board list
+	 */
 	private void clearTable() {
 		TableLayout tl = (TableLayout) findViewById(R.id.leader_table);
-		tl.removeAllViews();
+		if (tl.getChildCount() > 1) {
+			for (int i = 0; i < 100; i++) {
+				tl.removeView(tl.getChildAt(1));
+			}
+		}
 	}
 	
+	/*
+	 * Populate the table with all leader info.
+	 */
 	private void populateTable(List<LeaderInfo> board) {
 		TableLayout tl = (TableLayout) findViewById(R.id.leader_table);
 		
 		for (int i = 0; i < board.size(); i++) {
 			TableRow row = new TableRow(this);
 			
+			// Create the rank column
 			TextView rank = new TextView(this);
 			rank.setText(Integer.toString(board.get(i).getRank()));
+			rank.setTextAppearance(this, R.style.tableOuter);
+			rank.setWidth(findViewById(R.id.table_head_col1).getWidth()); // Hacky way to mimic the "weight" programmatically.
+			rank.setGravity(Gravity.CENTER);
+			
+			// Create the name column
 			TextView name = new TextView(this);
 			name.setText(board.get(i).getName());
+			name.setTextAppearance(this, R.style.tableInner);
+			name.setWidth(findViewById(R.id.table_head_col2).getWidth());
+			name.setGravity(Gravity.CENTER);
+			name.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//Toast.makeText(LeaderActivity.this, v.text(), Toast.LENGTH_SHORT).show();
+				}
+			});
+			
+			// Create points column
 			TextView points = new TextView(this);
 			points.setText(Integer.toString(board.get(i).getPoints()));
+			points.setTextAppearance(this, R.style.tableOuter);
+			points.setWidth(findViewById(R.id.table_head_col3).getWidth());
+			points.setGravity(Gravity.CENTER);
+			
+			if ((i + 1) % 2 == 0) {
+				row.setBackgroundColor(getResources().getColor(R.color.bg_lightgrey));
+			}
+			else {
+				row.setBackgroundColor(getResources().getColor(R.color.bg_darkgrey));
+			}
 			
 			row.addView(rank);
 			row.addView(name);

@@ -37,10 +37,10 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:gravity">center</item>
     </style>
-    <style name="tableoddrow">
-        
+    <style name="tableOuter">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
-    <style name="tableevenrow">
-        
+    <style name="tableInner">
+        <item name="android:textColor">#00FF00</item>
     </style>
 </resources>

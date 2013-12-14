@@ -21,7 +21,17 @@
 	    	    android:contentDescription="@string/app_name"
 	    	    android:src="@drawable/logo"
 	    	    android:layout_marginLeft="16dp"
-		 	    android:layout_marginRight="16dp" />     
+		 	    android:layout_marginRight="16dp" />
+	    	<TextView 
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:id="@+id/serverId"
+	    	    android:layout_marginLeft="16dp"
+	    	    android:layout_marginRight="16dp"
+	    	    android:layout_marginBottom="16dp"
+	    	    android:textStyle="bold"
+	    	    android:textColor="#FFFFFF"
+	    	    android:gravity="center" />  
 	   	    <Spinner
 	   	        android:id="@+id/leader_filter"
 	   	        android:typeface="monospace"
@@ -50,22 +60,24 @@
 	   	                android:text="@string/leader_table_headerC1" 
 	   	                style="@style/tableheaders" 
 	   	                android:layout_weight="0.10"
-	   	                android:layout_height="wrap_content" />
+	   	                android:layout_height="wrap_content"
+	   	                android:id="@+id/table_head_col1" />
 	   	            <TextView
 	   	                android:text="@string/leader_table_headerC2" 
 	   	                style="@style/tableheaders"
 	   	                android:layout_weight="0.25"
 	   	                android:layout_height="wrap_content"
 	   	                android:layout_marginLeft="1dp"
-	   	                android:layout_marginRight="1dp" />
+	   	                android:layout_marginRight="1dp"
+	   	                android:id="@+id/table_head_col2" />
 	   	            <TextView
 	   	                android:text="@string/leader_table_headerC3"
 	   	                style="@style/tableheaders"
 	   	                android:layout_weight="0.25"
-	   	                android:layout_height="wrap_content" />
+	   	                android:layout_height="wrap_content"
+	   	                android:id="@+id/table_head_col3" />
 	   	        </TableRow>
 	   	    </TableLayout>
-	   	    
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -32,8 +32,7 @@
         <activity
             android:name="com.koalabeast.tagpro.LeaderActivity"
             android:label="@string/title_activity_leader"
-            android:parentActivityName="com.koalabeast.tagpro.MainMenuActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:parentActivityName="com.koalabeast.tagpro.MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.koalabeast.tagpro.MainMenuActivity" />
