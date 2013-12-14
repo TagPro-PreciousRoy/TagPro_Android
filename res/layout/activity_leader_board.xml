@@ -59,13 +59,13 @@
 	   	            <TextView
 	   	                android:text="@string/leader_table_headerC1" 
 	   	                style="@style/tableheaders" 
-	   	                android:layout_weight="0.10"
+	   	                android:layout_weight="0.15"
 	   	                android:layout_height="wrap_content"
 	   	                android:id="@+id/table_head_col1" />
 	   	            <TextView
 	   	                android:text="@string/leader_table_headerC2" 
 	   	                style="@style/tableheaders"
-	   	                android:layout_weight="0.25"
+	   	                android:layout_weight="0.45"
 	   	                android:layout_height="wrap_content"
 	   	                android:layout_marginLeft="1dp"
 	   	                android:layout_marginRight="1dp"

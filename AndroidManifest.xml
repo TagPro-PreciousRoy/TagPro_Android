@@ -17,8 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.koalabeast.tagpro.MainMenuActivity"
-            android:label="@string/title_activity_main_menu"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_main_menu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +36,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.koalabeast.tagpro.MainMenuActivity" />
+        </activity>
+        <activity
+            android:name="com.koalabeast.tagpro.ProfileViewActivity"
+            android:label="@string/title_activity_profile_view" >
         </activity>
     </application>
 
