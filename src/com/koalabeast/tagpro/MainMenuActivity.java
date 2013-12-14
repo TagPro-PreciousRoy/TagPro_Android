@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.koalabeast.tagpro.infocontainers.ServerInfo;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 

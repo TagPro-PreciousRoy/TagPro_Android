@@ -1,4 +1,4 @@
-package com.koalabeast.tagpro;
+package com.koalabeast.tagpro.infocontainers;
 
 import android.os.Parcelable;
 import android.os.Parcel;
@@ -10,7 +10,7 @@ public class ServerInfo implements Parcelable {
 	public int games;
 	public int players;
 	
-	ServerInfo(String name, String location, String url, int games, int players) {
+	public ServerInfo(String name, String location, String url, int games, int players) {
 		this.name = name;
 		this.location = location;
 		this.url = url;

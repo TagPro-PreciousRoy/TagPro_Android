@@ -11,9 +11,9 @@ import org.jsoup.select.Elements;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.koalabeast.tagpro.LeaderInfo;
+import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 
-public class BoardParser extends AsyncTask<String, Void, List<List<LeaderInfo>>> {
+public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderInfo>>> {
 	public static final String[] divs = {"Day", "Week", "Month"};
 	
 	@Override

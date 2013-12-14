@@ -23,7 +23,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.koalabeast.tagpro.parsers.BoardParser;
+import com.koalabeast.tagpro.infocontainers.LeaderInfo;
+import com.koalabeast.tagpro.infocontainers.ServerInfo;
+import com.koalabeast.tagpro.parsers.LeaderBoardParser;
 
 public class LeaderActivity extends Activity implements OnItemSelectedListener, OnClickListener {
 	private ServerInfo server;
@@ -65,7 +67,7 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		pd.show();
 		
 		try {
-			leaderboards = new BoardParser().execute(this.server.url).get();
+			leaderboards = new LeaderBoardParser().execute(this.server.url).get();
 		}
 		catch (Exception e) {
 			Log.e("[HTML-PARSE]", Log.getStackTraceString(e));
@@ -83,18 +85,24 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 	
 	@Override
 	public void onClick(View v) {
+		// Find the player in the List
 		TextView tv = (TextView) v;
 		Spinner filterSpinner = (Spinner) findViewById(R.id.leader_filter);
 		String filterCategory = filterSpinner.getSelectedItem().toString();
-		int idx = Arrays.asList(BoardParser.divs).indexOf(filterCategory);
+		int idx = Arrays.asList(LeaderBoardParser.divs).indexOf(filterCategory);
 		TableRow parent = (TableRow) tv.getParent();
-		int rank = Integer.parseInt(((TextView) parent.getChildAt(0)).getText().toString());
-		String href = leaderboards.get(idx).get(rank).getHref();
+		String rank = ((TextView)parent.getChildAt(0)).getText().toString();
+		// All of ^ just to get here.  Better way?  Probably.
+		LeaderInfo player = leaderboards.get(idx).get(Integer.parseInt(rank) - 1);
 		
 		Intent in = new Intent(this, ProfileViewActivity.class);
-		startActivity(in);
 		
-		Toast.makeText(this, href, Toast.LENGTH_SHORT).show();
+		Bundle b = new Bundle();
+		b.putParcelable("player", player);
+		b.putParcelable("server", server);
+		in.putExtras(b);
+		
+		startActivity(in);
 	}
 	
 	@Override
