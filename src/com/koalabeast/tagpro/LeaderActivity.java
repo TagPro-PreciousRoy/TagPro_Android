@@ -43,9 +43,12 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		
 		setContentView(R.layout.activity_leader_board);
 		
-		// Populate the text field with the server info
-		TextView serverId = (TextView) findViewById(R.id.serverId);
-		serverId.setText(server.name + ": " + server.location);
+		// Populate the text fields with the server info
+		TextView serverName = (TextView) findViewById(R.id.leadersServerName);
+		serverName.setText(server.name);
+		
+		TextView serverLocation = (TextView) findViewById(R.id.leadersServerLocation);
+		serverLocation.setText(server.location);
 		
 		// Create the spinner for the leaderboard filter
 		Spinner spinLeaderFilter = (Spinner) findViewById(R.id.leader_filter);
