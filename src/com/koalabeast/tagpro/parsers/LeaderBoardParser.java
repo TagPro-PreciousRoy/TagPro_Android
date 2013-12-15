@@ -1,6 +1,7 @@
 package com.koalabeast.tagpro.parsers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -15,6 +16,16 @@ import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 
 public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderInfo>>> {
 	public static final String[] divs = {"Day", "Week", "Month"};
+	private String[] previousWinners = new String[divs.length];
+	
+	public String getPreviousWinner(int filter) {
+		String winner = "";
+		if (divs.length > filter) {
+			winner = previousWinners[filter];
+		}
+		
+		return winner;
+	}
 	
 	@Override
 	protected void onPreExecute() {
@@ -30,7 +41,7 @@ public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderI
 			for (String div : divs) {
 				List<LeaderInfo> board = new ArrayList<LeaderInfo>();
 				Elements elems = doc.select("#" + div);
-				//prevWinners[Arrays.asList(divs).indexOf(div)] = elems.select("h3").text().replace("Previous Winner: ", "");
+				previousWinners[Arrays.asList(divs).indexOf(div)] = elems.select("h3").text().replace("Previous Winner: ", "");
 				Elements rows = elems.select("tr");
 				rows.remove(0); // Remove the header line.
 				

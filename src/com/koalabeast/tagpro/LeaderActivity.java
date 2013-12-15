@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -30,12 +29,13 @@ import com.koalabeast.tagpro.parsers.LeaderBoardParser;
 public class LeaderActivity extends Activity implements OnItemSelectedListener, OnClickListener {
 	private ServerInfo server;
 	private List<List<LeaderInfo>> leaderboards = new ArrayList<List<LeaderInfo>>();
+	private LeaderBoardParser parser = new LeaderBoardParser();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Get the server we are to query the leaderboard from.
+		// Get the server we are to query the leader board from.
 		Bundle b = getIntent().getExtras();
 		this.server = b.getParcelable("server");
 		
@@ -52,7 +52,7 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		TextView serverLocation = (TextView) findViewById(R.id.leadersServerLocation);
 		serverLocation.setText(server.location);
 		
-		// Create the spinner for the leaderboard filter
+		// Create the spinner for the leader board filter
 		Spinner spinLeaderFilter = (Spinner) findViewById(R.id.leader_filter);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leader_queries, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,8 +69,10 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		pd.setMessage("Please wait...");
 		pd.show();
 		
+		parser = new LeaderBoardParser();
+		
 		try {
-			leaderboards = new LeaderBoardParser().execute(this.server.url).get();
+			leaderboards = parser.execute(this.server.url).get();
 		}
 		catch (Exception e) {
 			Log.e("[HTML-PARSE]", Log.getStackTraceString(e));
@@ -78,9 +80,6 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		
 		pd.dismiss();
 		
-		if (leaderboards == null) {
-			finish();
-		}
 		if (leaderboards.size() < 3) {
 			Toast.makeText(this, "Unable to retrieve leaderboards.", Toast.LENGTH_SHORT).show();
 		}
@@ -108,16 +107,10 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		startActivity(in);
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main_menu, menu);
-		return true;
-	}
-	
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		if (leaderboards != null) {
 			clearTable();
-			populateTable(leaderboards.get(pos));
+			populateTable(leaderboards.get(pos), pos);
 		}
 	}
 	
@@ -141,7 +134,10 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 	/*
 	 * Populate the table with all leader info.
 	 */
-	private void populateTable(List<LeaderInfo> board) {
+	private void populateTable(List<LeaderInfo> board, int pos) {
+		TextView tvPreviousWinner = (TextView) findViewById(R.id.leader_prev_winner);
+		tvPreviousWinner.setText("Previous Winner: " + parser.getPreviousWinner(pos));
+		
 		TableLayout tl = (TableLayout) findViewById(R.id.leader_table);
 		
 		for (int i = 0; i < board.size(); i++) {
@@ -170,6 +166,7 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 			points.setWidth(findViewById(R.id.table_head_col3).getWidth());
 			points.setGravity(Gravity.CENTER);
 			
+			// Make the rows distinguishable from each other.
 			if ((i + 1) % 2 == 0) {
 				row.setBackgroundColor(getResources().getColor(R.color.bg_lightgrey));
 			}

@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/menu_background"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop" >
 
         <LinearLayout
@@ -50,14 +50,25 @@
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:typeface="monospace" />
+            
+            <TextView
+                android:id="@+id/leader_prev_winner"
+                style="@style/whiteLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:gravity="center" />
 
             <TableLayout
                 android:id="@+id/leader_table"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" >
+                android:layout_marginTop="16dp"
+                android:paddingBottom="16dp" >
 
+                <!-- Warning says this is useless; however, it is dynamically built upon -->
                 <TableRow
                     android:id="@+id/leader_table_head"
                     android:layout_width="match_parent"
