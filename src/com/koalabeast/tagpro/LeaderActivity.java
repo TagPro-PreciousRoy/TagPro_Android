@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +14,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 import com.koalabeast.tagpro.infocontainers.ServerInfo;
@@ -29,6 +29,10 @@ public class LeaderActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_leader);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("Leader Boards");
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -82,9 +86,14 @@ public class LeaderActivity extends FragmentActivity {
 			View rootView = inflater.inflate(R.layout.fragment_leader, container, false);
 			
 			position = getArguments().getInt(ARG_POSITION);
-			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(position));
+			//TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+			//dummyTextView.setText(Integer.toString(position));
 			return rootView;
+		}
+		
+		@Override
+		public void onStart() {
+			super.onStart();
 		}
 	}
 

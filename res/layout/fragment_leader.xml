@@ -26,8 +26,31 @@
         android:hint="Server Location" />
     
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/server_previouswinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:hint="Previous Winner" />
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+    
+    <ScrollView
+        android:id="@+id/leader_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <ProgressBar 
+             android:id="@+id/leader_load_progressbar"
+             style="?android:attr/progressBarStyleLarge"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
+        
+    </ScrollView>
 
 </LinearLayout>
