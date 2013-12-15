@@ -19,7 +19,10 @@
     <string name="button_leader">Leaders</string>
 
     <!-- LeaderActivity -->
-    <string name="title_activity_leader">LeaderActivity</string>
+    <string name="title_activity_leader">Leader Boards</string>
+    <string name="hint_server_name">Server Name</string>
+    <string name="hint_server_location">Server Location</string>
+    <string name="hint_previous_winner">Previous Winner</string>
 
     <string-array name="leader_queries">
         <item>Day</item>

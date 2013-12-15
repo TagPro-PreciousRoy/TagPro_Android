@@ -18,6 +18,15 @@ import android.view.ViewGroup;
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 import com.koalabeast.tagpro.infocontainers.ServerInfo;
 
+/**
+ * 
+ * @author nerdwaller
+ *
+ * @description The leader activity displays the leader boards for the provided server.  The class
+ * should be pretty easily scaled for additional leader board additions through the leader_queries
+ * array in the @string file.
+ * 
+ */
 public class LeaderActivity extends FragmentActivity {
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -28,34 +37,49 @@ public class LeaderActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Set the default layout, the fragments will determine their own layout within.
 		setContentView(R.layout.activity_leader);
 		
+		// Customize the action bar.
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("Leader Boards");
+		actionBar.setTitle(getResources().getString(R.string.title_activity_leader));
 
+		// Set up the scrollable tabs
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
+
+		// Get the page titles for the scrollable tabs.
 		Boards = getResources().getStringArray(R.array.leader_queries);
 	}
 
+	/**
+	 * Simple adapter to create a fragmented page view with scrollable tabs.
+	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
+		/**
+		 * Get the fragment that will be viewed, pass the fragment all needed info to
+		 * populate the view.
+		 */
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new LeaderBoardFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_POSITION, position);
+			args.putInt(LeaderBoardFragment.ARG_POSITION, position);
 			fragment.setArguments(args);
 			return fragment;
 		}
 
+		/**
+		 * Return the number of pages we will have for the leader board (number of scrollable tabs)
+		 */
 		@Override
 		public int getCount() {
 			return getResources().getStringArray(R.array.leader_queries).length;
@@ -73,11 +97,14 @@ public class LeaderActivity extends FragmentActivity {
 		}
 	}
 
-	public static class DummySectionFragment extends Fragment {
+	/**
+	 * Create the fragment views for the given position, as passed in from the bundle args.
+	 */
+	public static class LeaderBoardFragment extends Fragment {
 		public static final String ARG_POSITION = "position";
 		private int position;
 
-		public DummySectionFragment() {
+		public LeaderBoardFragment() {
 			
 		}
 
@@ -85,9 +112,9 @@ public class LeaderActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_leader, container, false);
 			
-			position = getArguments().getInt(ARG_POSITION);
-			//TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			//dummyTextView.setText(Integer.toString(position));
+			Bundle args = getArguments();
+			position = args.getInt(ARG_POSITION);
+
 			return rootView;
 		}
 		
