@@ -47,7 +47,6 @@ public class ProfileViewActivity extends Activity {
 		return true;
 	}
 	
-	/*
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -58,7 +57,7 @@ public class ProfileViewActivity extends Activity {
 		pd.show();
 		
 		try {
-			profile = new ProfileViewParser().execute(this.server.url + this.player.getHref()).get();
+			profile = new ProfileViewParser().execute(this.server.url, this.player.getHref()).get();
 		}
 		catch (Exception e) {
 			Log.e("[HTML-PARSE]", Log.getStackTraceString(e));
@@ -66,5 +65,4 @@ public class ProfileViewActivity extends Activity {
 		
 		pd.dismiss();
 	}
-	*/
 }

@@ -95,7 +95,7 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 		int idx = Arrays.asList(LeaderBoardParser.divs).indexOf(filterCategory);
 		TableRow parent = (TableRow) tv.getParent();
 		String rank = ((TextView)parent.getChildAt(0)).getText().toString();
-		// All of ^ just to get here.  Better way?  Probably.
+		// All of ^ just to get the indexes to find this player's info.  Better way?  Probably.
 		LeaderInfo player = leaderboards.get(idx).get(Integer.parseInt(rank) - 1);
 		
 		Intent in = new Intent(this, ProfileViewActivity.class);
@@ -115,8 +115,10 @@ public class LeaderActivity extends Activity implements OnItemSelectedListener, 
 	}
 	
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		clearTable();
-		populateTable(leaderboards.get(pos));
+		if (leaderboards != null) {
+			clearTable();
+			populateTable(leaderboards.get(pos));
+		}
 	}
 	
 	@Override

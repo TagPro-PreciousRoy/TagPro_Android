@@ -36,7 +36,7 @@ public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderI
 				
 				// Ugly way to handle broken/empty leaderboards (maptest)
 				if (rows.size() == 0 ) {
-					return null;
+					this.cancel(true);
 				}
 				
 				for (Element row : rows) {
