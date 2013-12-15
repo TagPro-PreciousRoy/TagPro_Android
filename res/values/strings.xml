@@ -31,5 +31,8 @@
     <string name="leader_table_headerC2">Name</string>
     <string name="leader_table_headerC3">Points</string>
     <string name="title_activity_profile_view">ProfileViewActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

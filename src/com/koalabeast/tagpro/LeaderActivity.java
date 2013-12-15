@@ -1,183 +1,91 @@
 package com.koalabeast.tagpro;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 import com.koalabeast.tagpro.infocontainers.ServerInfo;
-import com.koalabeast.tagpro.parsers.LeaderBoardParser;
 
-public class LeaderActivity extends Activity implements OnItemSelectedListener, OnClickListener {
+public class LeaderActivity extends FragmentActivity {
+	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private ViewPager mViewPager;
+	private String[] Boards;
 	private ServerInfo server;
 	private List<List<LeaderInfo>> leaderboards = new ArrayList<List<LeaderInfo>>();
-	private LeaderBoardParser parser = new LeaderBoardParser();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_leader);
+
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(mSectionsPagerAdapter);
 		
-		// Get the server we are to query the leader board from.
-		Bundle b = getIntent().getExtras();
-		this.server = b.getParcelable("server");
-		
-		ActionBar bar = getActionBar();
-		bar.setDisplayHomeAsUpEnabled(true);
-		bar.setDisplayShowTitleEnabled(false);
-		
-		setContentView(R.layout.activity_leader_board);
-		
-		// Populate the text fields with the server info
-		TextView serverName = (TextView) findViewById(R.id.leadersServerName);
-		serverName.setText(server.name);
-		
-		TextView serverLocation = (TextView) findViewById(R.id.leadersServerLocation);
-		serverLocation.setText(server.location);
-		
-		// Create the spinner for the leader board filter
-		Spinner spinLeaderFilter = (Spinner) findViewById(R.id.leader_filter);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.leader_queries, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinLeaderFilter.setAdapter(adapter);
-		spinLeaderFilter.setOnItemSelectedListener(this);
+		Boards = getResources().getStringArray(R.array.leader_queries);
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		ProgressDialog pd = new ProgressDialog(this);
-		pd.setCancelable(true);
-		pd.setTitle("Querying " + server.name);
-		pd.setMessage("Please wait...");
-		pd.show();
-		
-		parser = new LeaderBoardParser();
-		
-		try {
-			leaderboards = parser.execute(this.server.url).get();
+
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+		public SectionsPagerAdapter(FragmentManager fm) {
+			super(fm);
 		}
-		catch (Exception e) {
-			Log.e("[HTML-PARSE]", Log.getStackTraceString(e));
+
+		@Override
+		public Fragment getItem(int position) {
+			Fragment fragment = new DummySectionFragment();
+			Bundle args = new Bundle();
+			args.putInt(DummySectionFragment.ARG_POSITION, position);
+			fragment.setArguments(args);
+			return fragment;
 		}
-		
-		pd.dismiss();
-		
-		if (leaderboards.size() < 3) {
-			Toast.makeText(this, "Unable to retrieve leaderboards.", Toast.LENGTH_SHORT).show();
+
+		@Override
+		public int getCount() {
+			return getResources().getStringArray(R.array.leader_queries).length;
 		}
-	}
-	
-	@Override
-	public void onClick(View v) {
-		// Find the player in the List
-		TextView tv = (TextView) v;
-		Spinner filterSpinner = (Spinner) findViewById(R.id.leader_filter);
-		String filterCategory = filterSpinner.getSelectedItem().toString();
-		int idx = Arrays.asList(LeaderBoardParser.divs).indexOf(filterCategory);
-		TableRow parent = (TableRow) tv.getParent();
-		String rank = ((TextView)parent.getChildAt(0)).getText().toString();
-		// All of ^ just to get the indexes to find this player's info.  Better way?  Probably.
-		LeaderInfo player = leaderboards.get(idx).get(Integer.parseInt(rank) - 1);
-		
-		Intent in = new Intent(this, ProfileViewActivity.class);
-		
-		Bundle b = new Bundle();
-		b.putParcelable("player", player);
-		b.putParcelable("server", server);
-		in.putExtras(b);
-		
-		startActivity(in);
-	}
-	
-	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		if (leaderboards != null) {
-			clearTable();
-			populateTable(leaderboards.get(pos), pos);
-		}
-	}
-	
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		// Doesn't matter, leave things alone.
-	}
-	
-	/*
-	 * Clear out the current leader board list
-	 */
-	private void clearTable() {
-		TableLayout tl = (TableLayout) findViewById(R.id.leader_table);
-		if (tl.getChildCount() > 1) {
-			for (int i = 0; i < 100; i++) {
-				tl.removeView(tl.getChildAt(1));
-			}
-		}
-	}
-	
-	/*
-	 * Populate the table with all leader info.
-	 */
-	private void populateTable(List<LeaderInfo> board, int pos) {
-		TextView tvPreviousWinner = (TextView) findViewById(R.id.leader_prev_winner);
-		tvPreviousWinner.setText("Previous Winner: " + parser.getPreviousWinner(pos));
-		
-		TableLayout tl = (TableLayout) findViewById(R.id.leader_table);
-		
-		for (int i = 0; i < board.size(); i++) {
-			TableRow row = new TableRow(this);
-			LeaderInfo leader = board.get(i);
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			Locale l = Locale.getDefault();
 			
-			// Create the rank column
-			TextView rank = new TextView(this);
-			rank.setText(Integer.toString(leader.getRank()));
-			rank.setTextAppearance(this, R.style.tableOuter);
-			rank.setWidth(findViewById(R.id.table_head_col1).getWidth()); // Hacky way to mimic the "weight" programmatically.
-			rank.setGravity(Gravity.CENTER);
-			
-			// Create the name column
-			TextView name = new TextView(this);
-			name.setText(leader.getName());
-			name.setTextAppearance(this, R.style.tableInner);
-			name.setWidth(findViewById(R.id.table_head_col2).getWidth());
-			name.setGravity(Gravity.CENTER);
-			name.setOnClickListener(this);
-			
-			// Create points column
-			TextView points = new TextView(this);
-			points.setText(Integer.toString(leader.getPoints()));
-			points.setTextAppearance(this, R.style.tableOuter);
-			points.setWidth(findViewById(R.id.table_head_col3).getWidth());
-			points.setGravity(Gravity.CENTER);
-			
-			// Make the rows distinguishable from each other.
-			if ((i + 1) % 2 == 0) {
-				row.setBackgroundColor(getResources().getColor(R.color.bg_lightgrey));
-			}
-			else {
-				row.setBackgroundColor(getResources().getColor(R.color.bg_darkgrey));
+			if (position < LeaderActivity.this.Boards.length) {
+				return LeaderActivity.this.Boards[position].toUpperCase(l);
 			}
 			
-			row.addView(rank);
-			row.addView(name);
-			row.addView(points);
-			tl.addView(row);
+			return null;
 		}
 	}
+
+	public static class DummySectionFragment extends Fragment {
+		public static final String ARG_POSITION = "position";
+		private int position;
+
+		public DummySectionFragment() {
+			
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_leader, container, false);
+			
+			position = getArguments().getInt(ARG_POSITION);
+			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+			dummyTextView.setText(Integer.toString(position));
+			return rootView;
+		}
+	}
+
 }
