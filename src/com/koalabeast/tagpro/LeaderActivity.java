@@ -72,29 +72,6 @@ public class LeaderActivity extends FragmentActivity {
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setOffscreenPageLimit(leaderBoards.length - 1); // Keep tabs in memory to avoid unnecessary refresh.
 	}
-	
-	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.leader, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			//case R.id.action_refresh:
-			//	refreshView();
-			//	return true;
-			//case R.id.action_search:
-			//	openSearch();
-			//	return true;
-		}
-		
-		return false;
-	}
-	*/
 
 	/**
 	 * Simple adapter to create a fragmented page view with scrollable tabs.
@@ -102,6 +79,10 @@ public class LeaderActivity extends FragmentActivity {
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		public Fragment[] myFragments = new Fragment[3];
 
+		/**
+		 * 
+		 * @param fm
+		 */
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -150,7 +131,10 @@ public class LeaderActivity extends FragmentActivity {
 		public static final String ARG_POSITION = "position";
 		private int position;
 		private View rootView;
-
+		
+		/**
+		 * 
+		 */
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			rootView = inflater.inflate(R.layout.fragment_leader, container, false);
@@ -169,11 +153,17 @@ public class LeaderActivity extends FragmentActivity {
 			return rootView;
 		}
 		
+		/**
+		 * 
+		 */
 		@Override
 		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 			inflater.inflate(R.menu.leader, menu);
 		}
 		
+		/**
+		 * 
+		 */
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			switch (item.getItemId()) {
@@ -185,14 +175,20 @@ public class LeaderActivity extends FragmentActivity {
 			}
 		}
 		
+		/**
+		 * 
+		 */
 		@Override
 		public void onStart() {
 			super.onStart();
 			startAsyncTask();
 		}
 		
+		/**
+		 * Refresh the data for the leader boards.
+		 */
 		private void refresh() {
-			// TODO - Make the icon rotate during refresh.
+			// TODO - Make the icon rotate during refresh, remove the toast.
 			Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG).show();
 			startAsyncTask();
 		}
@@ -204,6 +200,14 @@ public class LeaderActivity extends FragmentActivity {
 			new LeaderBoardParser(this).execute(server.url);
 		}
 		
+		/**
+		 * Callback for the parser completion to trigger the actions.
+		 * 
+		 * @param result - The List of lists for leader infos.
+		 * @param prevWinners - An array of previous winners.
+		 * 
+		 * TODO - Pass back a single List<LeaderInfo> and a String for the previous winner.
+		 */
 		public void onParserComplete(List<List<LeaderInfo>> result, String[] prevWinners) {
 			try {
 				LinearLayout leaderViewer = (LinearLayout) rootView.findViewById(R.id.leader_viewer);
@@ -234,6 +238,8 @@ public class LeaderActivity extends FragmentActivity {
 		
 		/**
 		 * Generate and return the view for a leader info object.
+		 * 
+		 * @param li - The single leader's info object.
 		 */
 		private LinearLayout generateLeaderInfoView(LeaderInfo li) {
 			// Create and set up the layout view.
@@ -285,6 +291,11 @@ public class LeaderActivity extends FragmentActivity {
 			return ll;
 		}
 
+		/**
+		 * Onclick handler, the only things that are clickable on the main pages are the leader info panes.
+		 * 
+		 * @param view - The view object.
+		 */
 		@Override
 		public void onClick(View view) {
 			LinearLayout ll = (LinearLayout) view;
