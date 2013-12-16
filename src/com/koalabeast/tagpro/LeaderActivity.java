@@ -1,6 +1,5 @@
 package com.koalabeast.tagpro;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,9 +13,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 import com.koalabeast.tagpro.infocontainers.ServerInfo;
+import com.koalabeast.tagpro.parsers.LeaderBoardParser;
 
 /**
  * 
@@ -30,13 +33,16 @@ import com.koalabeast.tagpro.infocontainers.ServerInfo;
 public class LeaderActivity extends FragmentActivity {
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
-	private String[] Boards;
+	private String[] leaderBoards;
 	private ServerInfo server;
-	private List<List<LeaderInfo>> leaderboards = new ArrayList<List<LeaderInfo>>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Get the arguments passed in, i.e. the server to query.
+		Bundle b = getIntent().getExtras();
+		this.server = b.getParcelable("server");
 		
 		// Set the default layout, the fragments will determine their own layout within.
 		setContentView(R.layout.activity_leader);
@@ -52,13 +58,30 @@ public class LeaderActivity extends FragmentActivity {
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		// Get the page titles for the scrollable tabs.
-		Boards = getResources().getStringArray(R.array.leader_queries);
+		leaderBoards = getResources().getStringArray(R.array.leader_queries);
+		
+		// Start the parsing service in the background.
+		//new LeaderBoardParser(this).execute(server.url);
+	}
+	
+	public void onParserComplete(List<List<LeaderInfo>> li, String[] previousWinners) {
+		
+	}
+	
+	/**
+	 * Create a new LinearLayout view for a leader pane.
+	 */
+	private LinearLayout createLeaderPane(LeaderInfo leaderInfo) {
+		LinearLayout ll = new LinearLayout(this);
+		
+		return ll;
 	}
 
 	/**
 	 * Simple adapter to create a fragmented page view with scrollable tabs.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		public Fragment[] myFragments = new Fragment[3];
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -74,6 +97,7 @@ public class LeaderActivity extends FragmentActivity {
 			Bundle args = new Bundle();
 			args.putInt(LeaderBoardFragment.ARG_POSITION, position);
 			fragment.setArguments(args);
+			myFragments[position] = fragment;
 			return fragment;
 		}
 
@@ -89,8 +113,8 @@ public class LeaderActivity extends FragmentActivity {
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			
-			if (position < LeaderActivity.this.Boards.length) {
-				return LeaderActivity.this.Boards[position].toUpperCase(l);
+			if (position < LeaderActivity.this.leaderBoards.length) {
+				return LeaderActivity.this.leaderBoards[position].toUpperCase(l);
 			}
 			
 			return null;
@@ -100,9 +124,10 @@ public class LeaderActivity extends FragmentActivity {
 	/**
 	 * Create the fragment views for the given position, as passed in from the bundle args.
 	 */
-	public static class LeaderBoardFragment extends Fragment {
+	public class LeaderBoardFragment extends Fragment {
 		public static final String ARG_POSITION = "position";
 		private int position;
+		private View rootView;
 
 		public LeaderBoardFragment() {
 			
@@ -110,18 +135,42 @@ public class LeaderActivity extends FragmentActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_leader, container, false);
+			rootView = inflater.inflate(R.layout.fragment_leader, container, false);
 			
 			Bundle args = getArguments();
 			position = args.getInt(ARG_POSITION);
-
+			
+			TextView srvName = (TextView) rootView.findViewById(R.id.server_name);
+			srvName.setText(LeaderActivity.this.server.name);
+			TextView srvLoc = (TextView) rootView.findViewById(R.id.server_location);
+			srvLoc.setText(LeaderActivity.this.server.location);
 			return rootView;
 		}
 		
 		@Override
 		public void onStart() {
 			super.onStart();
+			
+			new LeaderBoardParser(this).execute(server.url);
+		}
+		
+		@Override
+		public void onResume() {
+			super.onResume();
+		}
+		
+		public void onParserComplete(List<List<LeaderInfo>> result, String[] prevWinners) {
+			ScrollView sv = (ScrollView) rootView.findViewById(R.id.leader_scroller);
+			sv.removeAllViews();
+			
+			List<LeaderInfo> liList = result.get(position);
+			LinearLayout ll = new LinearLayout(getActivity());
+			for(LeaderInfo li : liList) {
+				TextView tv = new TextView(getActivity());
+				tv.setText(Integer.toString(li.getRank()));
+				ll.addView(tv);
+			}
+			sv.addView(ll);
 		}
 	}
-
 }

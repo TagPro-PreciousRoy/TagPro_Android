@@ -12,11 +12,18 @@ import org.jsoup.select.Elements;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.koalabeast.tagpro.LeaderActivity;
+import com.koalabeast.tagpro.LeaderActivity.LeaderBoardFragment;
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 
 public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderInfo>>> {
-	public static final String[] divs = {"Day", "Week", "Month"};
+	private String[] divs = {"Day", "Week", "Month"};
 	private String[] previousWinners = new String[divs.length];
+	private LeaderBoardFragment activity;
+	
+	public LeaderBoardParser(LeaderBoardFragment activity) {
+		this.activity = activity;
+	}
 	
 	public String getPreviousWinner(int filter) {
 		String winner = "";
@@ -56,12 +63,21 @@ public class LeaderBoardParser extends AsyncTask<String, Void, List<List<LeaderI
 				}
 				leaderBoards.add(board);
 			}
+			
+			return leaderBoards;
 		}
 		catch (Exception e) {
 			Log.e("[HTML-PARSE]", Log.getStackTraceString(e));
-			return null;
 		}
 		
-		return leaderBoards;
+		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(List<List<LeaderInfo>> result) {
+		super.onPostExecute(result);
+		if (result != null) {
+			this.activity.onParserComplete(result, previousWinners);
+		}
 	}
 }
