@@ -27,7 +27,16 @@
     <string name="hint_server_name">Server Name</string>
     <string name="hint_server_location">Server Location</string>
     <string name="hint_previous_winner">Previous Winner</string>
-
+    <string name="hint_rank">1.</string>
+    <string name="hint_playername">Lucky Spammer</string>
+    <string name="hint_playerpoints">1000000</string>
+    <string name="flairdesc_leaderofday">Won Daily Leader Board</string>
+    <string name="flairdesc_leaderofweek">Won Weekly Leader Board</string>
+    <string name="flairdesc_leaderofmonth">Won Monthly Leader Board</string>
+    <string name="flairdesc_donor">Thank You for your Support!</string>
+    <string name="flairdesc_developer">Rewarded to any user who actively goes above and beyond to better the community.</string>
+    <string name="flairdesc_luckyspammer">Exclusive to the developer of the game.</string>
+    <string name="arrowdesc">View player\'s profile</string>
     <string-array name="leader_queries">
         <item>Day</item>
         <item>Week</item>
