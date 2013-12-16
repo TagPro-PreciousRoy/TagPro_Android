@@ -3,7 +3,11 @@ package com.koalabeast.tagpro;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,11 +15,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koalabeast.tagpro.infocontainers.LeaderInfo;
 import com.koalabeast.tagpro.infocontainers.ServerInfo;
@@ -30,6 +40,7 @@ import com.koalabeast.tagpro.parsers.LeaderBoardParser;
  * array in the @string file.
  * 
  */
+@SuppressLint("ValidFragment") // This should probably be fixed, as the fragment may need to be static.
 public class LeaderActivity extends FragmentActivity {
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -52,30 +63,38 @@ public class LeaderActivity extends FragmentActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getResources().getString(R.string.title_activity_leader));
 
+		// Get the page titles for the scrollable tabs.
+		leaderBoards = getResources().getStringArray(R.array.leader_queries);
+				
 		// Set up the scrollable tabs
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-		// Get the page titles for the scrollable tabs.
-		leaderBoards = getResources().getStringArray(R.array.leader_queries);
-		
-		// Start the parsing service in the background.
-		//new LeaderBoardParser(this).execute(server.url);
+		mViewPager.setOffscreenPageLimit(leaderBoards.length - 1); // Keep tabs in memory to avoid unnecessary refresh.
 	}
 	
-	public void onParserComplete(List<List<LeaderInfo>> li, String[] previousWinners) {
-		
+	/*
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.leader, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
-	/**
-	 * Create a new LinearLayout view for a leader pane.
-	 */
-	private LinearLayout createLeaderPane(LeaderInfo leaderInfo) {
-		LinearLayout ll = new LinearLayout(this);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			//case R.id.action_refresh:
+			//	refreshView();
+			//	return true;
+			//case R.id.action_search:
+			//	openSearch();
+			//	return true;
+		}
 		
-		return ll;
+		return false;
 	}
+	*/
 
 	/**
 	 * Simple adapter to create a fragmented page view with scrollable tabs.
@@ -123,15 +142,14 @@ public class LeaderActivity extends FragmentActivity {
 
 	/**
 	 * Create the fragment views for the given position, as passed in from the bundle args.
+	 * 
+	 * TODO - Update LeaderBoardParser to take a parameter of the desired div and only pass back
+	 * a single List<LeaderInfo> instead of all the lists.  That's a waste.
 	 */
-	public class LeaderBoardFragment extends Fragment {
+	public class LeaderBoardFragment extends Fragment implements OnClickListener {
 		public static final String ARG_POSITION = "position";
 		private int position;
 		private View rootView;
-
-		public LeaderBoardFragment() {
-			
-		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,33 +162,140 @@ public class LeaderActivity extends FragmentActivity {
 			srvName.setText(LeaderActivity.this.server.name);
 			TextView srvLoc = (TextView) rootView.findViewById(R.id.server_location);
 			srvLoc.setText(LeaderActivity.this.server.location);
+			
+			// Create an options menu for the fragment
+			setHasOptionsMenu(true);
+
 			return rootView;
+		}
+		
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			inflater.inflate(R.menu.leader, menu);
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			switch (item.getItemId()) {
+				case R.id.action_refresh:
+					refresh();
+					return true;
+				default:
+					return super.onOptionsItemSelected(item);
+			}
 		}
 		
 		@Override
 		public void onStart() {
 			super.onStart();
-			
+			startAsyncTask();
+		}
+		
+		private void refresh() {
+			// TODO - Make the icon rotate during refresh.
+			Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_LONG).show();
+			startAsyncTask();
+		}
+		
+		/**
+		 * Init the asyncronous task to either load or refresh the data.
+		 */
+		private void startAsyncTask() {
 			new LeaderBoardParser(this).execute(server.url);
 		}
 		
-		@Override
-		public void onResume() {
-			super.onResume();
+		public void onParserComplete(List<List<LeaderInfo>> result, String[] prevWinners) {
+			try {
+				LinearLayout leaderViewer = (LinearLayout) rootView.findViewById(R.id.leader_viewer);
+				
+				// Get the list and create the root node that we will add the views to.
+				List<LeaderInfo> liList = result.get(position);
+				LinearLayout ll = new LinearLayout(getActivity());
+				LayoutParams layParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+				ll.setLayoutParams(layParams);
+				ll.setOrientation(LinearLayout.VERTICAL);
+				
+				for (LeaderInfo li : liList) {
+					ll.addView(generateLeaderInfoView(li));
+				}
+				
+				leaderViewer.removeViewAt(leaderViewer.getChildCount() - 1);
+				if (prevWinners.length > position) {
+					TextView prevWinTxt = (TextView) rootView.findViewById(R.id.server_previouswinner);
+					prevWinTxt.setText("Previous Winner: " + prevWinners[position]);
+				}
+				
+				leaderViewer.addView(ll);
+			}
+			catch (NullPointerException e) {
+				// Just back out
+			}
 		}
 		
-		public void onParserComplete(List<List<LeaderInfo>> result, String[] prevWinners) {
-			ScrollView sv = (ScrollView) rootView.findViewById(R.id.leader_scroller);
-			sv.removeAllViews();
-			
-			List<LeaderInfo> liList = result.get(position);
+		/**
+		 * Generate and return the view for a leader info object.
+		 */
+		private LinearLayout generateLeaderInfoView(LeaderInfo li) {
+			// Create and set up the layout view.
 			LinearLayout ll = new LinearLayout(getActivity());
-			for(LeaderInfo li : liList) {
-				TextView tv = new TextView(getActivity());
-				tv.setText(Integer.toString(li.getRank()));
-				ll.addView(tv);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			lp.setMargins(0, 8, 0, 8);
+			ll.setLayoutParams(lp);
+			ll.setOrientation(LinearLayout.HORIZONTAL);
+			ll.setBackgroundResource(R.drawable.leaders_rounded_corners);
+			ll.setPadding(8, 8, 8, 8);
+			ll.setOnClickListener(this);
+			
+			// Add a tag to the view for easy info retrieval (used in onClick for profile loading)
+			ll.setTag(li);
+			
+			// Create the icon... Design ideas?  TODO - Make this flair, grayed if they don't have it.
+			ImageView icon = new ImageView(getActivity());
+			LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			iconParams.setMargins(0, 0, 10, 0);
+			icon.setLayoutParams(iconParams);
+			if ((li.getRank() + 1) % 2 == 0) {
+				icon.setImageResource(R.drawable.blue_ball);
 			}
-			sv.addView(ll);
+			else {
+				icon.setImageResource(R.drawable.red_ball);
+			}
+			ll.addView(icon);
+			
+			// Set the Rank
+			TextView rank = new TextView(getActivity());
+			LayoutParams rankParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+			rank.setLayoutParams(rankParams);
+			rank.setTextColor(Color.parseColor("#FFFFFF"));
+			rank.setText(Integer.toString(li.getRank()) + ". ");
+			ll.addView(rank);
+			
+			
+			// Set the name
+			TextView name = new TextView(getActivity());
+			name.setId(100);
+			LayoutParams nameParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			name.setLayoutParams(nameParams);
+			name.setTextColor(Color.parseColor("#FFFFFF"));
+			name.setTypeface(Typeface.DEFAULT_BOLD);
+			name.setText(li.getName());
+			
+			ll.addView(name);
+			
+			return ll;
+		}
+
+		@Override
+		public void onClick(View view) {
+			LinearLayout ll = (LinearLayout) view;
+			LeaderInfo li = (LeaderInfo) ll.getTag();
+			
+			Intent in = new Intent(getActivity(), ProfileViewActivity.class);
+			Bundle b = new Bundle();
+			b.putParcelable("player", li);
+			b.putParcelable("server", LeaderActivity.this.server);
+			in.putExtras(b);
+			startActivity(in);
 		}
 	}
 }

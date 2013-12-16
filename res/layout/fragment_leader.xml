@@ -1,60 +1,71 @@
-<LinearLayout 
+<ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LeaderActivity$DummySectionFragment"
     android:background="@drawable/menu_background" >
-
-    <TextView
-        android:id="@+id/server_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:hint="@string/hint_server_name" />
     
-    <TextView
-        android:id="@+id/server_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textColor="#fff"
-        android:hint="@string/hint_server_location" />
-    
-    <TextView
-        android:id="@+id/server_previouswinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        
-        android:gravity="center"
-        android:hint="@string/hint_previous_winner" />
-    
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
-    
-    <ScrollView
-        android:id="@+id/leader_scroller"
+    <LinearLayout
+        android:id="@+id/leader_viewer"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
-        <ProgressBar 
-             android:id="@+id/leader_load_progressbar"
-             style="?android:attr/progressBarStyleLarge"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" />
-        
-    </ScrollView>
 
-</LinearLayout>
+	    <TextView
+	        android:id="@+id/server_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="30sp"
+	        android:textStyle="bold"
+	        android:textColor="#fff"
+	        android:hint="@string/hint_server_name" />
+	    
+	    <TextView
+	        android:id="@+id/server_location"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textStyle="italic"
+	        android:textColor="#fff"
+	        android:hint="@string/hint_server_location" />
+	    
+	    <TextView
+	        android:id="@+id/server_previouswinner"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textStyle="italic"
+	        android:textColor="#fff"
+	        android:gravity="center"
+	        android:hint="@string/hint_previous_winner" />
+	    
+	    <View
+	        android:layout_width="fill_parent"
+	        android:layout_height="1dp"
+	        android:background="@android:color/darker_gray"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginBottom="5dp" />
+	    
+	    <LinearLayout
+	        android:id="@+id/leader_container"
+	        android:orientation="vertical"
+	        android:layout_marginBottom="@dimen/activity_vertical_margin"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+	        
+	        <ProgressBar 
+	             android:id="@+id/leader_load_progressbar"
+	             style="?android:attr/progressBarStyleLarge"
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content" />
+	        
+	    </LinearLayout>
+	    
+	</LinearLayout>
+
+</ScrollView>

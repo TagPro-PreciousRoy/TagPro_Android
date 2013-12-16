@@ -3,11 +3,14 @@
 
     <string name="app_name">TagPro</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_main_menu">TagPro</string>
+    <string name="action_refresh">Refresh</string>
+
+    <!-- Network Error Dialog -->
     <string name="network_error_title">Network Error</string>
     <string name="network_error_description">Looks like you aren\'t connected to the internet! If you are, it could be that the Koalabeast servers are under heavy load. Try again later.</string>
     <string name="network_error_button">Okay :(</string>
+    
+    <!-- Game Loader/Activity -->
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_join_game_dialog">JoinGameDialog</string>
     <string name="join_game_title">Finding game…</string>
@@ -15,6 +18,7 @@
     <string name="join_game_state_looking">Looking for a game…</string>
 
     <!-- Main Menu -->
+    <string name="title_activity_main_menu">TagPro</string>
     <string name="button_play">Play</string>
     <string name="button_leader">Leaders</string>
 
@@ -30,12 +34,9 @@
         <item>Month</item>
     </string-array>
 
-    <string name="leader_table_headerC1">Rank</string>
-    <string name="leader_table_headerC2">Name</string>
-    <string name="leader_table_headerC3">Points</string>
+    <!-- ProfileViewActivity -->
     <string name="title_activity_profile_view">ProfileViewActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
 
+	<!-- Temp -->
+	<string name="hello_world">Hello World!</string>
 </resources>
