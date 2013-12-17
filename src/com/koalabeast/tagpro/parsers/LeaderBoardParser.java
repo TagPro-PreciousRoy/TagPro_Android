@@ -1,6 +1,7 @@
 package com.koalabeast.tagpro.parsers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -61,7 +62,8 @@ public class LeaderBoardParser extends AsyncTask<String, Void, List<LeaderInfo>>
 				// Remove leading '/'.  TODO - Although unlikely to change, this should be regex to verify.
 				String href = cols.get(1).select("a").attr("href").substring(1);
 				String points = cols.get(2).text();
-				boolean[] flair = findFlair(urls[0] + href);
+				boolean[] flair = new boolean[6];
+				Arrays.fill(flair, false);//= findFlair(urls[0] + href);
 				leaderBoard.add(new LeaderInfo(rank, name, href, points, flair));
 			}
 			
@@ -85,6 +87,10 @@ public class LeaderBoardParser extends AsyncTask<String, Void, List<LeaderInfo>>
 		}
 	}
 	
+	/**
+	 * In master: this is unused currently because it will thrash the server through iterative parsing of profiles.
+	 * We will need an API to allow for this functionality in production.
+	 */
 	private boolean[] findFlair(String url) {
 		try {
 			boolean[] flair = new boolean[LeaderInfo.Flairs.values().length];
