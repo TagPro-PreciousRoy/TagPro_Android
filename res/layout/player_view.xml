@@ -1,128 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:background="@drawable/player_view_bg" >
-    
-    <!-- Create two rows for flair icons, greyed by default - colored if the player has them. -->
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="4dp"
+	android:background="@android:color/transparent">
+	
+    <!-- A janky way to get margins to work in fragmented activities. -->
 	<LinearLayout
-	    android:id="@+id/icon_wrapper"
-	    android:orientation="vertical"
-	    android:layout_width="wrap_content"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_marginRight="8dp"
-	    android:background="@android:color/transparent"
-	    android:gravity="center" >
+	    android:orientation="horizontal"
+	    android:paddingLeft="8dp"
+	    android:paddingRight="8dp"
+	    android:paddingTop="8dp"
+	    android:paddingBottom="8dp"
+	    android:layout_marginTop="4dp"
+	    android:layout_marginBottom="4dp"
+	    android:background="@drawable/player_view_bg" >
+	    
+	    <!-- Create two rows for flair icons, greyed by default - colored if the player has them. -->
+		<LinearLayout
+		    android:id="@+id/icon_wrapper"
+		    android:orientation="vertical"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="8dp"
+		    android:background="@android:color/transparent"
+		    android:gravity="center" >
+		    
+		    <LinearLayout
+		        android:id="@+id/icon_wrapper_row1"
+		        android:orientation="horizontal"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" >
+		        
+		        <ImageView
+		            android:id="@+id/flair_leader_of_day"
+		            android:contentDescription="@string/flairdesc_leaderofday"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_leader_day_grayscale"
+		            android:padding="1dp" />
+		        
+		        <ImageView
+		            android:id="@+id/flair_leader_of_week"
+		            android:contentDescription="@string/flairdesc_leaderofweek"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_leader_week_grayscale"
+		            android:padding="1dp" />
+		        
+		        <ImageView
+		            android:id="@+id/flair_leader_of_month"
+		            android:contentDescription="@string/flairdesc_leaderofmonth"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_leader_month_grayscale"
+		            android:padding="1dp" />
+		        
+		    </LinearLayout> <!-- End Icon Row 1 -->
+		    
+		    <LinearLayout
+		        android:id="@+id/icon_wrapper_row2"
+		        android:orientation="horizontal"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" >
+		        
+		        <ImageView
+		            android:id="@+id/flair_donor"
+		            android:contentDescription="@string/flairdesc_donor"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_donate_grayscale"
+		            android:padding="1dp" />
+		        
+		        <ImageView
+		            android:id="@+id/flair_developer"
+		            android:contentDescription="@string/flairdesc_developer"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_developer_grayscale"
+		            android:padding="1dp" />
+		        
+		        <ImageView
+		            android:id="@+id/flair_luckyspammer"
+		            android:contentDescription="@string/flairdesc_luckyspammer"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:src="@drawable/flair_lucky_spammer_grayscale"
+		            android:padding="1dp" />
+		        
+		    </LinearLayout> <!-- End Icon Row 2 -->
+		    
+		</LinearLayout> <!-- End Icon Section -->
+	    
+	    <TextView
+	        android:id="@+id/player_rank"
+	        android:layout_height="match_parent"
+	        android:layout_width="28dp"
+	        android:hint="@string/hint_rank"
+	        android:textColor="#fff"
+	        android:gravity="right"
+	        android:layout_marginRight="5dp" />
 	    
 	    <LinearLayout
-	        android:id="@+id/icon_wrapper_row1"
-	        android:orientation="horizontal"
+	        android:id="@+id/player_info_wrapper"
+	        android:orientation="vertical"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" >
 	        
-	        <ImageView
-	            android:id="@+id/flair_leader_of_day"
-	            android:contentDescription="@string/flairdesc_leaderofday"
-	            android:layout_width="wrap_content"
+	        <TextView
+	            android:id="@+id/player_name"
 	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_leader_day"
-	            android:padding="1dp" />
-	        <ImageView
-	            android:id="@+id/flair_leader_of_week"
-	            android:contentDescription="@string/flairdesc_leaderofweek"
 	            android:layout_width="wrap_content"
+	            android:hint="@string/hint_playername"
+	            android:textColor="@color/tp_lightgreen"
+	            android:textStyle="bold" />
+	
+	        <TextView
+	            android:id="@+id/player_points"
 	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_leader_week"
-	            android:padding="1dp" />
-	        <ImageView
-	            android:id="@+id/flair_leader_of_month"
-	            android:contentDescription="@string/flairdesc_leaderofmonth"
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_leader_month"
-	            android:padding="1dp" />
+	            android:hint="@string/hint_playerpoints"
+	            android:textColor="#fff"
+	            android:textStyle="italic" />
 	        
-	    </LinearLayout> <!-- End Icon Row 1 -->
-	    
-	    <LinearLayout
-	        android:id="@+id/icon_wrapper_row2"
-	        android:orientation="horizontal"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-	        
-	        <ImageView
-	            android:id="@+id/flair_donor"
-	            android:contentDescription="@string/flairdesc_donor"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_donate"
-	            android:padding="1dp" />
-	        
-	        <ImageView
-	            android:id="@+id/flair_developer"
-	            android:contentDescription="@string/flairdesc_developer"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_developer"
-	            android:padding="1dp" />
-	        
-	        <ImageView
-	            android:id="@+id/flair_luckyspammer"
-	            android:contentDescription="@string/flairdesc_luckyspammer"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/flair_lucky_spammer"
-	            android:padding="1dp" />
-	        
-	    </LinearLayout> <!-- End Icon Row 2 -->
-	    
-	</LinearLayout> <!-- End Icon Section -->
-    
-    <TextView
-        android:id="@+id/player_rank"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:hint="@string/hint_rank"
-        android:textColor="#fff" />
-    
-    <LinearLayout
-        android:id="@+id/player_info_wrapper"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-        
-        <TextView
-            android:id="@+id/player_name"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:hint="@string/hint_playername"
-            android:textColor="#fff"
-            android:textStyle="bold" />
+	    </LinearLayout>
 
-        <TextView
-            android:id="@+id/player_points"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:hint="@string/hint_playerpoints"
-            android:textColor="#fff"
-            android:textStyle="italic" />
-        
+	    <LinearLayout
+	        android:layout_height="match_parent"
+	        android:layout_width="fill_parent"
+	        android:gravity="right" >
+	        
+	        <ImageView
+	            android:id="@+id/player_arrow"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:contentDescription="@string/arrowdesc"
+	            android:gravity="right"
+	            android:src="@drawable/ic_action_next_item" />
+	        
+	    </LinearLayout>
+
     </LinearLayout>
-    
-    <ImageView
-        android:id="@+id/player_arrow"
-        android:contentDescription="@string/arrowdesc"
-        android:src="@drawable/ic_action_forward"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="right" />
-    
+
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -247,6 +248,32 @@ public class LeaderActivity extends FragmentActivity {
 			name.setText(li.getName());
 			TextView points = (TextView) view.findViewById(R.id.player_points);
 			points.setText(Integer.toString(li.getPoints()));
+			
+			// Highlight the flair if the player has it.
+			if (li.hasFlair(LeaderInfo.Flairs.LeaderOfDay)) {
+				ImageView lod = (ImageView) view.findViewById(R.id.flair_leader_of_day);
+				lod.setImageDrawable(getResources().getDrawable(R.drawable.flair_leader_day));
+			}
+			if (li.hasFlair(LeaderInfo.Flairs.LeaderOfWeek)) {
+				ImageView low = (ImageView) view.findViewById(R.id.flair_leader_of_week);
+				low.setImageDrawable(getResources().getDrawable(R.drawable.flair_leader_week));
+			}
+			if (li.hasFlair(LeaderInfo.Flairs.LeaderOfMonth)) {
+				ImageView lom = (ImageView) view.findViewById(R.id.flair_leader_of_month);
+				lom.setImageDrawable(getResources().getDrawable(R.drawable.flair_leader_month));
+			}
+			if (li.hasFlair(LeaderInfo.Flairs.Donor)) {
+				ImageView don = (ImageView) view.findViewById(R.id.flair_donor);
+				don.setImageDrawable(getResources().getDrawable(R.drawable.flair_donate));
+			}
+			if (li.hasFlair(LeaderInfo.Flairs.Developer)) {
+				ImageView dev = (ImageView) view.findViewById(R.id.flair_developer);
+				dev.setImageDrawable(getResources().getDrawable(R.drawable.flair_developer));
+			}
+			if (li.hasFlair(LeaderInfo.Flairs.LuckySpammer)) {
+				ImageView lucky = (ImageView) view.findViewById(R.id.flair_luckyspammer);
+				lucky.setImageDrawable(getResources().getDrawable(R.drawable.flair_lucky_spammer));
+			}
 			
 			// Add a tag to the view for easy info retrieval (specifically used in the onClick for profile loading)
 			view.setTag(li);
