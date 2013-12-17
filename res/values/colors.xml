@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_lightgrey">#272727</color>
+    <color name="bg_darkgrey">#151515</color>
+    <color name="tp_lightgreen">#ace600</color>
+</resources>

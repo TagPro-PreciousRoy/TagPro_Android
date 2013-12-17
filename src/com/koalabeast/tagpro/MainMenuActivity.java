@@ -1,6 +1,8 @@
 package com.koalabeast.tagpro;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -11,11 +13,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.koalabeast.tagpro.infocontainers.ServerInfo;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -72,6 +74,13 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 								servers.add(server);
 							}
 							
+							// Put the servers in Alpha order.
+							Collections.sort(servers, new Comparator<ServerInfo>() {
+								public int compare(ServerInfo s1, ServerInfo s2) {
+									return s1.name.compareToIgnoreCase(s2.name);
+								}
+							});
+							
 							for (ServerInfo s : servers) {
 								// Loop through servers, adding them to the dropdown
 								serverListAdapter.add(s.name);
@@ -108,9 +117,22 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		((TextView) findViewById(R.id.serverLocation)).setText(server.location);
 		((TextView) findViewById(R.id.serverPlayers)).setText("Number of players: " + server.players);
 		((TextView) findViewById(R.id.serverGames)).setText("Active games: " + server.games);
-				
-		
+
 		return false;
+	}
+
+	// Save the instance state when we go to other activities.
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putParcelable("server", this.pickedServer);
+	}
+	
+	// TODO - Restore the instance state when we get back from other activities.
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		//this.server = savedInstanceState.getParcelable("server");
 	}
 	
 	public void showJoinDialog(View button) {
@@ -127,9 +149,17 @@ public class MainMenuActivity extends Activity implements OnNavigationListener {
 		startActivity(in);
 	}
 	
+	public void switchToLeaders(View button) {
+		Intent in = new Intent(this, LeaderActivity.class);
+		// Pass in the server info to query from.
+		Bundle b = new Bundle();
+		b.putParcelable("server", pickedServer);
+		in.putExtras(b);
+		startActivity(in);
+	}
+
 	public void showNetworkError() {
 		new NetworkErrorDialogFragment().show(getFragmentManager(),
 				"NetworkErrorDialogFragment");
 	}
-
 }

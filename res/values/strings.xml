@@ -3,17 +3,49 @@
 
     <string name="app_name">TagPro</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_main_menu">TagPro</string>
+    <string name="action_refresh">Refresh</string>
+
+    <!-- Network Error Dialog -->
     <string name="network_error_title">Network Error</string>
     <string name="network_error_description">Looks like you aren\'t connected to the internet! If you are, it could be that the Koalabeast servers are under heavy load. Try again later.</string>
     <string name="network_error_button">Okay :(</string>
+    
+    <!-- Game Loader/Activity -->
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_join_game_dialog">JoinGameDialog</string>
-    
     <string name="join_game_title">Finding game…</string>
-    
     <string name="join_game_state_connecting">Connecting to server…</string>
     <string name="join_game_state_looking">Looking for a game…</string>
 
+    <!-- Main Menu -->
+    <string name="title_activity_main_menu">TagPro</string>
+    <string name="button_play">Play</string>
+    <string name="button_leader">Leaders</string>
+
+    <!-- LeaderActivity -->
+    <string name="title_activity_leader">Leader Boards</string>
+    <string name="hint_server_name">Server Name</string>
+    <string name="hint_server_location">Server Location</string>
+    <string name="hint_previous_winner">Previous Winner</string>
+    <string name="hint_rank">1.</string>
+    <string name="hint_playername">Lucky Spammer</string>
+    <string name="hint_playerpoints">1000000</string>
+    <string name="flairdesc_leaderofday">Won Daily Leader Board</string>
+    <string name="flairdesc_leaderofweek">Won Weekly Leader Board</string>
+    <string name="flairdesc_leaderofmonth">Won Monthly Leader Board</string>
+    <string name="flairdesc_donor">Thank You for your Support!</string>
+    <string name="flairdesc_developer">Rewarded to any user who actively goes above and beyond to better the community.</string>
+    <string name="flairdesc_luckyspammer">Exclusive to the developer of the game.</string>
+    <string name="arrowdesc">View player\'s profile</string>
+    <string-array name="leader_queries">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
+    <!-- ProfileViewActivity -->
+    <string name="title_activity_profile_view">ProfileViewActivity</string>
+
+	<!-- Temp -->
+	<string name="hello_world">Hello World!</string>
 </resources>
