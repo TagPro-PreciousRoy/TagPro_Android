@@ -8,6 +8,7 @@ The online game was developed by LuckySpammer.
 Current list of contributors:
 * roflmaoshizmp
 * jj56 (✈ in TagPro)
+* nerdwaller
 
 If you want to commit to the project, open a pull request. If you've submitted some good code, we may add you as a collaborator.
 
